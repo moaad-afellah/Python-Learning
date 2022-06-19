@@ -1,10 +1,9 @@
 import random
 
-
 class Enemy:
-    damage = 5
+    damage = 10
 
-    def __init__(self, name="joker", id=None, points=50):
+    def __init__(self, name="joker", id=None, points=200):
         self.id = id
         self.name = name
         self.points = points
@@ -48,9 +47,9 @@ listPerson = []
 
 
 def CreateGamer():
-    for i in range(1, 4):
+    for i in range(1, 6):
         listPerson.append(Person(name="Person" + str(i)))
-    for i in range(1, 24):
+    for i in range(1, 6):
         listEnemy.append(Enemy(name="Enemy" + str(i)))
 
 
@@ -60,6 +59,12 @@ def getRandamGamer(category):
     elif category == 'HERO':
         return random.randint(0, len(listPerson) - 1)
 
+
+def getRandamNumberOfAttack(category = 'ENEMY'):
+    if category == 'ENEMY':
+        return random.randint(0, 3)
+    elif category == 'HERO':
+        return random.randint(0, 3)
 
 def updateListDeadOfHeroAndEnemy():
     for person in listPerson:
@@ -71,23 +76,31 @@ def updateListDeadOfHeroAndEnemy():
             listEnemy.remove(enemy)
 
 
-CreateGamer()
-while len(listPerson) > 0 and len(listEnemy) > 0:
-    listEnemy[getRandamGamer('ENEMY')].attack(listPerson[getRandamGamer('HERO')])
-    updateListDeadOfHeroAndEnemy()
-    if len(listPerson) > 0 and len(listEnemy):
-        listPerson[getRandamGamer('HERO')].attack(listEnemy[getRandamGamer('ENEMY')])
-        updateListDeadOfHeroAndEnemy()
-    if len(listPerson) > 0 and len(listEnemy):
-        listPerson[getRandamGamer('HERO')].attack(listEnemy[getRandamGamer('ENEMY')])
-        updateListDeadOfHeroAndEnemy()
+for i in range(0, 1):
+
+    CreateGamer()
+    while len(listPerson) > 0 and len(listEnemy) > 0:
+
+        for attack in range(0, getRandamNumberOfAttack()):
+            if len(listPerson) > 0 and len(listEnemy):
+                listPerson[getRandamGamer('HERO')].attack(listEnemy[getRandamGamer('ENEMY')])
+                updateListDeadOfHeroAndEnemy()
+
+        for attack in range(0, getRandamNumberOfAttack()):
+            if len(listPerson) > 0 and len(listEnemy):
+                listEnemy[getRandamGamer('ENEMY')].attack(listPerson[getRandamGamer('HERO')])
+                updateListDeadOfHeroAndEnemy()
 
 
-if len(listPerson) > 0:
-    print("The winner is Heros , this is the list")
-    for person in listPerson:
-        print(person.name, " : ", person.points)
-else:
-    print("The winner is Enemies , this is the list")
-    for enemy in listEnemy:
-        print(enemy.name, " : ", enemy.points)
+
+    if len(listPerson) > 0:
+        print("The winner is Heros , this is the list")
+        for person in listPerson:
+            print(person.name, " : ", person.points)
+    else:
+        print("The winner is Enemies , this is the list")
+        for enemy in listEnemy:
+            print(enemy.name, " : ", enemy.points)
+
+    listEnemy = []
+    listPerson = []
