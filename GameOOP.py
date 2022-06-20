@@ -1,9 +1,10 @@
 import random
 
-class Enemy:
-    damage = 10
 
-    def __init__(self, name="joker", id=None, points=200):
+class Enemy:
+    damage = 5
+
+    def __init__(self, name="joker", id=None, points=50):
         self.id = id
         self.name = name
         self.points = points
@@ -44,12 +45,15 @@ class Person:
 
 listEnemy = []
 listPerson = []
+NUMBER_ROUND = 1
+NUMBER_WINNER_HERO = 0
+NUMBER_ENEMY_HERO = 0
 
 
 def CreateGamer():
     for i in range(1, 6):
         listPerson.append(Person(name="Person" + str(i)))
-    for i in range(1, 6):
+    for i in range(1, 22):
         listEnemy.append(Enemy(name="Enemy" + str(i)))
 
 
@@ -60,11 +64,12 @@ def getRandamGamer(category):
         return random.randint(0, len(listPerson) - 1)
 
 
-def getRandamNumberOfAttack(category = 'ENEMY'):
+def getRandamNumberOfAttack(category='ENEMY'):
     if category == 'ENEMY':
         return random.randint(0, 3)
     elif category == 'HERO':
         return random.randint(0, 3)
+
 
 def updateListDeadOfHeroAndEnemy():
     for person in listPerson:
@@ -76,7 +81,7 @@ def updateListDeadOfHeroAndEnemy():
             listEnemy.remove(enemy)
 
 
-for i in range(0, 1):
+for i in range(0, NUMBER_ROUND):
 
     CreateGamer()
     while len(listPerson) > 0 and len(listEnemy) > 0:
@@ -91,16 +96,22 @@ for i in range(0, 1):
                 listEnemy[getRandamGamer('ENEMY')].attack(listPerson[getRandamGamer('HERO')])
                 updateListDeadOfHeroAndEnemy()
 
-
-
     if len(listPerson) > 0:
+        NUMBER_WINNER_HERO += 1
         print("The winner is Heros , this is the list")
         for person in listPerson:
             print(person.name, " : ", person.points)
     else:
+        NUMBER_ENEMY_HERO += 1
         print("The winner is Enemies , this is the list")
         for enemy in listEnemy:
             print(enemy.name, " : ", enemy.points)
 
     listEnemy = []
     listPerson = []
+
+print("*************************************")
+print('Heros: ', NUMBER_WINNER_HERO * 100 / (NUMBER_WINNER_HERO + NUMBER_ENEMY_HERO))
+print('ENEMY: ', NUMBER_ENEMY_HERO * 100 / (NUMBER_WINNER_HERO + NUMBER_ENEMY_HERO))
+print("*************************************")
+
